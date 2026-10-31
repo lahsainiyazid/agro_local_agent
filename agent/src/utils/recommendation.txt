@@ -1,5 +1,5 @@
-Based on the provided information, I recommend the following to the farmer:
+Based on the provided information, I'll provide recommendations to the farmer for each plot.
 
-**Crop Management**
+**North Plot - Olive**
 
-* For 'North Plot - Olive', consider increasing the moisture target percentage
+* Moisture levels are within the target range
