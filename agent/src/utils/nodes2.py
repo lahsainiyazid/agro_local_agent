@@ -12,6 +12,7 @@ from src.utils.db.db_path2 import db_path
 from langchain.messages import SystemMessage,HumanMessage
 from langgraph.types import interrupt
 from langgraph.graph import END
+from langgraph.types import interrupt
 
 _=load_dotenv(find_dotenv())
 TOKEN=os.environ.get("BOT_TOKEN")
@@ -27,7 +28,7 @@ def test_recommendation(state:FarmerState):
      You are an agriculture assistant.Based on the following information provide recommendations to the farmer.
      Plots:{state["plots"]}
      Sensor_readings:{state["sensor_readings"]}
-     Sensor_anomalies:{state["anomalies"]}
+     Sensor_anomalies:{state["anomalies_dict"]}
             """
     response=local_llm.invoke(prompt)
     return {
@@ -43,16 +44,10 @@ def detect_manual_sensor_anomalies(path:Path=db_path):
     anomaly_cols=["soil_moisture_anom","air_temp_anom","air_hum_anom","soil_temperature_anom","rainfall_anom"]
     df_anom=df[anomaly_cols].any(axis=1)
     has_anom=df_anom.any()
-    anom_list=[{str(idx+1):val} for idx,val in df_anom.items()]  
-    system_message=manual_anomaly_prompt.format(
-     data=df,
-        anom_list=anom_list
-    )
-    anomaly=local_llm.invoke([SystemMessage(content=system_message),HumanMessage(content="Explain for sensors that have anomalies why ")])
+    anomalies_dict={int(idx+1):val for idx,val in df_anom.items()}  
     return {
-        "anomaly_report":anomaly.anomaly_report, 
-    "anomalies":anomaly.anomalies,
-    "anomaly_suspected":has_anom
+    "anomaly_suspected":has_anom,
+    "anomalies_dict":anomalies_dict 
     }
 
 def sensor_anomaly_router(state:FarmerState):
@@ -89,18 +84,16 @@ def write_recommendation(state:FarmerState):
 
 def write_alert(state:FarmerState):
     file_path=Path("/home/yazid/agro/agent/src/utils/alert.txt")
-    file_path.write_text(state["anomaly_report"])
+    file_path.write_text(str(state["anomalies_dict"]))
    
 
 def take_action(state:FarmerState):
     plots=state["plots"]
     sensor_readings=state["sensor_readings"]
-    anomalies=state["anomalies"]
+    anomalies_dict=state["anomalies_dict"]
     df_plots=pd.DataFrame(plots)
     df_sensors=pd.DataFrame(sensor_readings)
     df=df_plots.merge(df_sensors,left_on="id",right_on="plot_id")
-    anomalies=state["anomalies"]
-    anomalies_dict=anomalies[0].anomaly_pair
     df_anomalies=pd.DataFrame(anomalies_dict.items(),columns=["sensor_id","anomaly_status"])
     df=df.merge(df_anomalies,left_on="id_y",right_on="sensor_id")
     action_cols=["moisture_min_pct","moisture_target_pct","anomaly_status","soil_moisture"]
@@ -109,7 +102,6 @@ def take_action(state:FarmerState):
     
     return {
         "actions":df_actions.to_dict(),
-    "anomalies_dict":anomalies_dict
     }
 
 def decide_action(row):
@@ -121,14 +113,3 @@ def decide_action(row):
         else:
             return "WAIT"
 
-def farmer_approval_router(state:FarmerState):
-    actions=state["actions"]
-    if "WATER" in actions.values():
-        return "farmer_approval"
-    return END
-def farmer_approval(state:FarmerState):
-    actions=state["action"]
-    plots_to_water=[plot_id for plot_id,action in actions.items() if action=="WATER"]
-    decision=interrupt({"plots_to_water":plots_to_water,
-                        "question":"Do you approve watering these plots"})
-    return {"approved":approved}
