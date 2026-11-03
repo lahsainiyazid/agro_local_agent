@@ -48,7 +48,7 @@ def detect_manual_sensor_anomalies(path:Path=db_path):
      data=df,
         anom_list=anom_list
     )
-    anomaly=local_llm.invoke([SystemMessage(content=system_message),HumanMessage(content="check and explain for each sensor if there is an anomaly")])
+    anomaly=local_llm.invoke([SystemMessage(content=system_message),HumanMessage(content="Explain for sensors that have anomalies why ")])
     return {
         "anomaly_report":anomaly.anomaly_report, 
     "anomalies":anomaly.anomalies,

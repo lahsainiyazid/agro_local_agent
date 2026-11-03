@@ -1,1 +1,1 @@
-Sensor 4 shows anomalies in soil moisture and air temperature due to extreme values (-99.0 and 120.0). All other sensors are within normal ranges.
+{1: False, 2: False, 3: False, 4: True}

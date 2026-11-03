@@ -17,7 +17,6 @@ class FarmerState(TypedDict):
     recommendation:str|None
     anomaly_suspected:bool 
     anomaly_report:str|None 
-    anomalies:List[SensorAnomalyItem]
     anomaly_suspected:bool
     actions:Dict
     anomalies_dict:Dict
