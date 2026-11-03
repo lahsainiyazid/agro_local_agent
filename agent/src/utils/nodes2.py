@@ -4,12 +4,13 @@ import requests
 from dotenv import load_dotenv,find_dotenv 
 from pathlib import Path 
 from src.utils.objects2 import FarmerState,Recommendation,SensorAnomaly,SensorAnomalyItem 
-from src.utils.models2 import llm,local_llm 
+from src.utils.models2 import local_llm 
 from src.utils.prompts2 import recom_prompt,anomaly_prompt,manual_anomaly_prompt
 from src.utils.db.get_sensors2 import get_last_h_readings
 from src.utils.db.get_plots2 import get_all_plots
 from src.utils.db.db_path2 import db_path 
 from langchain.messages import SystemMessage,HumanMessage
+from langgraph.types import interrupt
 from langgraph.graph import END
 
 _=load_dotenv(find_dotenv())
@@ -42,13 +43,12 @@ def detect_manual_sensor_anomalies(path:Path=db_path):
     anomaly_cols=["soil_moisture_anom","air_temp_anom","air_hum_anom","soil_temperature_anom","rainfall_anom"]
     df_anom=df[anomaly_cols].any(axis=1)
     has_anom=df_anom.any()
-    anom_list=[{str(idx+1):val} for idx,val in df_anom.items()]
-    structured_llm=llm.with_structured_output(SensorAnomaly)
+    anom_list=[{str(idx+1):val} for idx,val in df_anom.items()]  
     system_message=manual_anomaly_prompt.format(
      data=df,
         anom_list=anom_list
     )
-    anomaly=structured_llm.invoke([SystemMessage(content=system_message),HumanMessage(content="check and explain for each sensor if there is an anomaly")])
+    anomaly=local_llm.invoke([SystemMessage(content=system_message),HumanMessage(content="check and explain for each sensor if there is an anomaly")])
     return {
         "anomaly_report":anomaly.anomaly_report, 
     "anomalies":anomaly.anomalies,
@@ -121,3 +121,14 @@ def decide_action(row):
         else:
             return "WAIT"
 
+def farmer_approval_router(state:FarmerState):
+    actions=state["actions"]
+    if "WATER" in actions.values():
+        return "farmer_approval"
+    return END
+def farmer_approval(state:FarmerState):
+    actions=state["action"]
+    plots_to_water=[plot_id for plot_id,action in actions.items() if action=="WATER"]
+    decision=interrupt({"plots_to_water":plots_to_water,
+                        "question":"Do you approve watering these plots"})
+    return {"approved":approved}

@@ -1,1 +1,1 @@
-Sensor 4 shows anomalous readings: soil moisture of -99.0 (invalid negative value) and air temperature of 120.0°C (extremely high). All other sensors (1-3) have normal readings within expected ranges.
+Sensor 4 shows anomalies in soil moisture and air temperature due to extreme values (-99.0 and 120.0). All other sensors are within normal ranges.

@@ -21,6 +21,7 @@ class FarmerState(TypedDict):
     anomaly_suspected:bool
     actions:Dict
     anomalies_dict:Dict
+    approved:bool
     
 
 
