@@ -1,6 +1,10 @@
-from langchain_groq import ChatGroq
-from langchain_ollama import ChatOllama 
-from dotenv import load_dotenv,find_dotenv
-import os 
-_=load_dotenv(find_dotenv())
-local_llm=ChatOllama(model="llama3.2:1b",temperature=0)
+import os
+from langchain_ollama import ChatOllama
+
+llm = ChatOllama(
+    model="qwen2.5:1.5b",
+    base_url=os.getenv(
+        "OLLAMA_BASE_URL",
+        "http://localhost:11434"
+    )
+)

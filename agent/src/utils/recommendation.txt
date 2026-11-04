@@ -3,36 +3,34 @@ Based on the provided information, here are some recommendations for the farmer:
 **Crop Management**
 
 * For North Plot - Olive:
-	+ Monitor soil moisture closely to ensure it doesn't drop below 15% of its maximum capacity. Adjust irrigation schedule accordingly.
-	+ Consider adding a drip irrigation system to reduce evaporation and runoff.
+	+ Monitor soil moisture closely to ensure it remains within the optimal range (18-25%).
+	+ Consider adjusting irrigation schedules based on rainfall and weather forecasts.
 * For South Plot - Tomato:
-	+ Maintain optimal soil temperature (20-25°C) for tomato growth. Avoid extreme temperatures that may stress the crop.
+	+ Maintain a consistent moisture level between 25-35%.
 	+ Ensure adequate air circulation around the plants to prevent fungal diseases.
 * For East Plot - Wheat:
-	+ Monitor soil moisture closely, as wheat is sensitive to drought. Adjust irrigation schedule if necessary.
-	+ Consider using a combination of drip and sprinkler irrigation systems for optimal water efficiency.
-* For West Plot - Citrus:
-	+ Maintain optimal soil temperature (15-20°C) for citrus growth. Avoid extreme temperatures that may stress the crop.
-	+ Ensure adequate air circulation around the plants to prevent fungal diseases.
-
-**Irrigation**
-
-* Review the current irrigation schedule and adjust it based on sensor readings, weather forecasts, and crop requirements.
-* Consider implementing a rainwater harvesting system to reduce water consumption.
+	+ Monitor soil temperature closely, as it can impact germination and growth.
+	+ Consider adjusting irrigation schedules based on weather forecasts and soil moisture levels.
 
 **Soil Health**
 
-* Monitor soil moisture levels regularly to ensure they're within optimal ranges for each crop.
-* Consider adding organic matter or fertilizers as needed to maintain healthy soil biota and structure.
+* All plots benefit from regular soil testing to monitor pH levels, nutrient content, and other factors that affect crop growth.
+* Based on the provided data, North Plot - Olive appears to have a slightly acidic soil (pH 6.5), while South Plot - Tomato has a more neutral pH (7.0).
+* East Plot - Wheat may benefit from additional fertilization or soil amendments to address potential nutrient deficiencies.
 
-**Weather Forecasting**
+**Irrigation**
 
-* Review the sensor readings to identify potential weather patterns that may impact crop growth, such as temperature fluctuations or excessive rainfall.
-* Adjust irrigation schedules accordingly to avoid overwatering or underwatering.
+* All plots require adequate irrigation, but North Plot - Olive appears to be receiving too much water (22.5% moisture level). Consider adjusting the irrigation schedule to ensure optimal moisture levels.
+* South Plot - Tomato and East Plot - Wheat may benefit from reduced watering schedules during periods of drought or extreme heat.
+
+**Weather Monitoring**
+
+* Monitor weather forecasts closely, as they can impact crop growth and yields.
+* Consider implementing a weather-based irrigation scheduling system to optimize water usage based on temperature, humidity, and precipitation levels.
 
 **Record Keeping**
 
-* Continue to monitor sensor readings and adjust irrigation schedules based on new data.
-* Keep a record of all sensor readings, including timestamps, soil moisture levels, air temperatures, and other relevant data points.
+* Maintain accurate records of sensor readings, including timestamp, plot ID, soil moisture level, air temperature, air humidity, soil temperature, rainfall, and source (Sensor_North).
+* Regularly review these records to identify trends and areas for improvement.
 
-By following these recommendations, the farmer can optimize crop management, reduce water waste, and improve overall agricultural productivity.
+By addressing these recommendations, the farmer can optimize crop management, improve soil health, and increase yields.
